@@ -19,9 +19,16 @@ export class BinanceController {
       .then((data) => {
         res.status(HttpStatus.OK).json(data);
       })
-      .catch(({ response }: AxiosError<IBinanceError>) => {
-        console.log('ERROR:', response.data.msg);
-        res.status(response.status).json(response.data);
+      .catch((error: AxiosError<IBinanceError>) => {
+        if ('response' in error) {
+          res.status(error.response.status).json(error.response.data);
+          console.log('ERROR:', error.response.data.msg);
+        } else {
+          res.status(500).json({
+            msg: error.message,
+          });
+          console.log('ERROR:', error.message);
+        }
       });
   }
 }
