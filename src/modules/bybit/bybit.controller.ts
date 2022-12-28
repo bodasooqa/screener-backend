@@ -18,9 +18,17 @@ export class BybitController {
       .then((data) => {
         res.status(HttpStatus.OK).json(data);
       })
-      .catch(({ response }: AxiosError<BybitError>) => {
-        console.log('ERROR:', response.data.retMsg);
-        res.status(response.status).json(response.data);
+      .catch((error: AxiosError<BybitError>) => {
+        console.log(error);
+        if ('response' in error) {
+          res.status(error.response.status).json(error.response.data);
+          console.log('ERROR:', error.response.data.retMsg);
+        } else {
+          res.status(500).json({
+            msg: error.message,
+          });
+          console.log('ERROR:', error.message);
+        }
       });
   }
 }

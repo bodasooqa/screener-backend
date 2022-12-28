@@ -14,7 +14,9 @@ export class BybitService {
   constructor(private readonly httpService: HttpService) {}
 
   async getKline(params: IBybitGetKlineRequestParams): Promise<IBybitKline> {
-    const { data } = await firstValueFrom<AxiosResponse<IBybitKlineResponse>>(
+    const { config, headers, data, request } = await firstValueFrom<
+      AxiosResponse<IBybitKlineResponse>
+    >(
       this.httpService
         .get<IBybitKlineResponse>('/spot/v3/public/quote/kline', {
           params: {
@@ -30,6 +32,26 @@ export class BybitService {
         )
     );
 
-    return data.result.list;
+    if ('list' in data.result) {
+      return data.result.list;
+    } else {
+      throw new AxiosError<BybitError>(
+        data.retMsg,
+        `${data.retCode}`,
+        config,
+        request,
+        {
+          config,
+          headers,
+          statusText: 'Bad request',
+          status: 400,
+          data: {
+            retMsg: data.retMsg,
+            retCode: data.retCode,
+            time: data.time,
+          },
+        }
+      );
+    }
   }
 }

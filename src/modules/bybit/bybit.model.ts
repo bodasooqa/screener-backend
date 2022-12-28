@@ -11,7 +11,7 @@ export interface IBybitCandle {
 
 export type IBybitKline = IBybitCandle[];
 
-export interface IBybitKlineResponse {
+export interface IBybitKlineResponse extends BybitError {
   result: {
     list: IBybitKline;
   };
