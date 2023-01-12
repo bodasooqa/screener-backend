@@ -26,3 +26,11 @@ export interface IBinanceGetKlineRequestParams {
   startTime: string;
   limit?: string;
 }
+
+export interface IBinanceExchangeSymbol {
+  symbol: string;
+  lastId: number;
+  count: number;
+}
+
+export type BinanceExchangeSymbols = IBinanceExchangeSymbol[];

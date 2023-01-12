@@ -3,10 +3,15 @@ import { BinanceService } from './binance.service';
 import { Response } from 'express';
 import { AxiosError } from 'axios';
 import { IBinanceError, IBinanceGetKlineRequestParams } from './binance.model';
+import { FirebaseAdminService } from '../firebase-admin/firebase-admin.service';
+import { FirebaseErrors } from '../firebase-admin/firebase-admin.model';
 
 @Controller('binance')
 export class BinanceController {
-  constructor(private readonly binanceService: BinanceService) {}
+  constructor(
+    private readonly binanceService: BinanceService,
+    private readonly firebaseAdminService: FirebaseAdminService
+  ) {}
 
   @Get('kline')
   async getKline(
@@ -29,6 +34,23 @@ export class BinanceController {
           });
           console.log('ERROR:', error.message);
         }
+      });
+  }
+
+  @Get('symbols')
+  async getSymbols(@Res() res: Response) {
+    this.firebaseAdminService
+      .getBinanceSpot()
+      .then((data) => {
+        res.status(HttpStatus.OK).json(data || []);
+      })
+      .catch((error) => {
+        res
+          .status([FirebaseErrors.NO_DATA].includes(error.message) ? 404 : 500)
+          .json({
+            msg: error.message,
+          });
+        console.log('ERROR:', error.message);
       });
   }
 }

@@ -76,7 +76,7 @@ bld/
 [Oo]bj/
 [Ll]og/
 
-# Visual Studio 2015 cache/options directory
+# Visual Studio 2015 store/options directory
 .vs/
 # Uncomment if you have tasks that create the project's static files in wwwroot
 #wwwroot/
@@ -131,7 +131,7 @@ artifacts/
 # Chutzpah Test files
 _Chutzpah*
 
-# Visual C++ cache files
+# Visual C++ store files
 ipch/
 *.aps
 *.ncb
@@ -247,10 +247,10 @@ Package.StoreAssociation.xml
 _pkginfo.txt
 *.appx
 
-# Visual Studio cache files
-# files ending in .cache can be ignored
+# Visual Studio store files
+# files ending in .store can be ignored
 *.[Cc]ache
-# but keep track of directories ending in .cache
+# but keep track of directories ending in .store
 !*.[Cc]ache/
 
 # Others
@@ -396,3 +396,4 @@ Temporary Items
 # Local
 .env
 dist
+*key.json

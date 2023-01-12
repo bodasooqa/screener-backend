@@ -3,6 +3,7 @@ import { catchError, firstValueFrom } from 'rxjs';
 import { AxiosError, AxiosResponse } from 'axios';
 import { HttpService } from '@nestjs/axios';
 import {
+  BinanceExchangeSymbols,
   IBinanceError,
   IBinanceGetKlineRequestParams,
   IBinanceKlineResponse,
@@ -21,6 +22,26 @@ export class BinanceService {
           params: {
             ...params,
             limit: Number(params.limit) || 500,
+          },
+        })
+        .pipe(
+          catchError((error: AxiosError<IBinanceError>) => {
+            throw error;
+          })
+        )
+    );
+
+    return data;
+  }
+
+  async getSpotSymbols(): Promise<BinanceExchangeSymbols> {
+    const { data } = await firstValueFrom<
+      AxiosResponse<BinanceExchangeSymbols>
+    >(
+      this.httpService
+        .get<BinanceExchangeSymbols>('/api/v3/ticker/24hr', {
+          params: {
+            type: 'MINI',
           },
         })
         .pipe(
