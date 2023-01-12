@@ -12,7 +12,6 @@ export class FirebaseAdminService {
   private db: admin.firestore.Firestore;
 
   constructor() {
-    console.log(process.env.FIREBASE_PRIVATE_KEY);
     admin.initializeApp({
       credential: admin.credential.cert({
         clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
